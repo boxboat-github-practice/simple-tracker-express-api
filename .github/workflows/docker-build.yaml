@@ -5,5 +5,5 @@ on:
 
 jobs:
   build:
-    uses: boxboat-github-practice/workflows/docker-build.yaml@main
+    uses: boxboat-github-practice/workflows/.github/workflows/docker-build.yaml@main
     
