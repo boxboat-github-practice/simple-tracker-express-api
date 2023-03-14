@@ -26,5 +26,5 @@ jobs:
 
         
 
-        docker pull ghcr.io/${GITHUB_REPOSITORY,,}$TAG
+        docker pull ghcr.io/${GITHUB_REPOSITORY,,}:$TAG
         docker images
