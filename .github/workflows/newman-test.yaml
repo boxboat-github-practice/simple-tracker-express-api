@@ -16,13 +16,15 @@ jobs:
 
     - name: list images
       run: |
-        gh api \
+        export TAG=$(gh api \
           -H "Accept: application/vnd.github+json" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
           /orgs/${GITHUB_REPOSITORY%%/*}/packages/container/${GITHUB_REPOSITORY##*/}/versions \
           | jq -r '.[].metadata.container.tags | .[0]'
+          | sort --version-sort \
+          | tail -n1)
 
         
 
-        # docker pull ghcr.io/${GITHUB_REPOSITORY,,}
+        docker pull ghcr.io/${GITHUB_REPOSITORY,,}$TAG
         docker images
