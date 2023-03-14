@@ -37,7 +37,7 @@ app.post('/employees', function(req, res) {
 
 app.get('/employees/:id', function(req, res) {
   let employee = data.employees.filter(e=>e.id == req.params.id)[0]
-  if (employee === undefined) res.status(404), res.send()
+  if (employee === undefined) res.status(404), res.send("Employee not found")
   else res.send(employee)
 })
 
@@ -103,7 +103,7 @@ app.post('/clients', function(req, res) {
 
 app.get('/clients/:id', function(req, res) {
   let client = data.clients.filter(e=>e?.id == req.params.id)[0] 
-  if (client === undefined) res.status(404), res.send()
+  if (client === undefined) res.status(404), res.send("Client not found")
   else res.send(client)
 })
 
@@ -178,7 +178,7 @@ app.post('/contracts', function(req, res) {
 
 app.get('/contracts/:id', function(req, res) {
   let contract = data.contracts.filter(e=>e?.id == req.params.id)[0]
-  if (contract === undefined) res.status(404), res.send()
+  if (contract === undefined) res.status(404), res.send("Contract not found")
   else res.send(contract)
 })
 
@@ -262,7 +262,7 @@ app.post('/history', function(req, res) {
 
 app.get('/history/:id', function(req, res) {
   let history = data.history.filter(e=>e.id == req.params.id)[0]
-  if (history === undefined) res.status(404), res.send()
+  if (history === undefined) res.status(404), res.send("History not found")
   else res.send(history)
 })
 
@@ -285,7 +285,6 @@ app.put('/history/:id', function(req, res) {
     res.send(data.history[i])
   } 
 })
-
 
 app.delete('/history/:id', function(req, res) {
   let i = data.history.findIndex(e=>e?.id==req.params.id)
