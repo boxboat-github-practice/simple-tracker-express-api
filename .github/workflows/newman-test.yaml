@@ -19,7 +19,7 @@ jobs:
         gh api \
           -H "Accept: application/vnd.github+json" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
-          /user/packages?package_type=container
+          /orgs/${GITHUB_REPOSITORY%%/*}/packages/container/${GITHUB_REPOSITORY##*/}/versions
 
-        docker pull ghcr.io/${GITHUB_REPOSITORY,,}
+
         docker images
