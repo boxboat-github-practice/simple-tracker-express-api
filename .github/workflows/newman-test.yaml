@@ -28,3 +28,5 @@ jobs:
 
         docker pull ghcr.io/${GITHUB_REPOSITORY,,}:$TAG
         docker images
+        docker run -p 8081:8081 ghcr.io/${GITHUB_REPOSITORY,,}:$TAG
+        curl 127.0.0.1:8081/employees | jq .
