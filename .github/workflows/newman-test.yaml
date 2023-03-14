@@ -28,5 +28,10 @@ jobs:
 
         docker pull ghcr.io/${GITHUB_REPOSITORY,,}:$TAG
         docker images
-        docker run -p 8081:8081 -d ghcr.io/${GITHUB_REPOSITORY,,}:$TAG
+        docker run -p 8081:8081 -n api -d ghcr.io/${GITHUB_REPOSITORY,,}:$TAG
+
+        until [ "`docker inspect -f {{.State.Running}} api`"=="true" ]; do
+          sleep 0.1;
+        done;
+
         curl 127.0.0.1:8081/employees | jq .
