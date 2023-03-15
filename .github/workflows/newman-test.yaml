@@ -38,7 +38,7 @@ jobs:
       with:
         repository: boxboat-github-practice/simple-tracker-spec
 
-    - uses: matt-ball/newman-action@v1.04
+    - uses: matt-ball/newman-action@v1.0.4
       with:
         collection: test-collection.json
         environment: Local.postman_environment.json
