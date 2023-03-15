@@ -29,8 +29,9 @@ jobs:
           | sort --version-sort \
           | tail -n1)
 
-        echo "IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}:$TAG" >> $GITHUB_ENV
-        docker pull $IMAGE_NAME
+        IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}:$TAG"
+        echo "IMAGE_NAME=$IMAGE" >> $GITHUB_ENV
+        docker pull $IMAGE
 
     - name: Checkout Spec Repo
       uses: actions/checkout@v3
@@ -47,9 +48,9 @@ jobs:
         docker run -p 8081:8081 --name api -d $IMAGE_NAME
         npm install newman
 
-        ready=0
-        while [[ $ready != 200 ]]; do
-          ready=$(curl -s -I 127.0.0.1:8081/employees | head -n 1 | awk -F ' ' '{print $2}')
+        READY=0
+        while [[ $READY != 200 ]]; do
+          READY=$(curl -s -I 127.0.0.1:8081/employees | head -n 1 | awk -F ' ' '{print $2}')
           sleep 0.1 
         done
 
