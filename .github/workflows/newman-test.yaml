@@ -14,7 +14,7 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v3
 
-    - name: Pull Latest Image
+    - name: Run Latest Image
       run: |
         ORG=${GITHUB_REPOSITORY%%/*}
         REPO=${GITHUB_REPOSITORY##*/}
@@ -32,6 +32,7 @@ jobs:
         IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}:$TAG"
         echo "IMAGE_NAME=$IMAGE" >> $GITHUB_ENV
         docker pull $IMAGE
+        docker run -p 8081:8081 --name api -d $IMAGE_NAME
 
     - name: Checkout Spec Repo
       uses: actions/checkout@v3
@@ -40,14 +41,7 @@ jobs:
 
     - name: list images
       run: |
-        docker run -p 8081:8081 --name api -d $IMAGE_NAME
-        npm install newman
-
-        # READY=0
-        # while [[ $READY != 200 ]]; do
-        #   READY=$(curl -s -I 127.0.0.1:8081/employees | head -n 1 | awk -F ' ' '{print $2}')
-        #   sleep 0.1 
-        # done
-
         curl 127.0.0.1:8081/employees | jq .
+
+
 
