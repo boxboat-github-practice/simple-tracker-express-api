@@ -38,14 +38,9 @@ jobs:
       with:
         repository: boxboat-github-practice/simple-tracker-spec
 
-    - uses: matt-ball/newman-action@v1.0.4
-      with:
-        collection: test-collection.json
-        environment: Local.postman_environment.json
-
-    # - name: list images
-    #   run: |
-    #     curl 127.0.0.1:8081/employees | jq .
-
+    - name: Run Newman
+      run: |
+        npm install -g newman
+        newman run -e Local.postman_environment.json test-collection.json
 
 
