@@ -16,6 +16,9 @@ jobs:
 
     - name: Pull Latest Image
       run: |
+        echo "org: ${GITHUB_REPOSITORY%%/*}"
+        echo "repo: ${GITHUB_REPOSITORY##*/}"
+
         gh api \
           -H "Accept: application/vnd.github+json" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
