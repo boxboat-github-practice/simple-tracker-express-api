@@ -14,8 +14,15 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v3
 
+    - name: Checkout Spec Repo
+      uses: actions/checkout@v3
+      with:
+        repository: boxboat-github-practice/simple-tracker-spec
+
     - name: list images
       run: |
+        ls -lah
+
         export TAG=$(gh api \
           -H "Accept: application/vnd.github+json" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
@@ -23,6 +30,8 @@ jobs:
           | jq -r '.[].metadata.container.tags | .[0]' \
           | sort --version-sort \
           | tail -n1)
+
+        npm install newman
         
         docker pull ghcr.io/${GITHUB_REPOSITORY,,}:$TAG
         docker images
