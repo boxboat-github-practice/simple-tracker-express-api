@@ -14,15 +14,8 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v3
 
-    - name: Checkout Spec Repo
-      uses: actions/checkout@v3
-      with:
-        repository: boxboat-github-practice/simple-tracker-spec
-
-    - name: list images
+    - name: Pull Latest Image
       run: |
-        ls -lah
-
         export TAG=$(gh api \
           -H "Accept: application/vnd.github+json" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
@@ -31,11 +24,23 @@ jobs:
           | sort --version-sort \
           | tail -n1)
 
+        IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}:$TAG
+        docker pull $IMAGE_NAME
+
+    - name: Checkout Spec Repo
+      uses: actions/checkout@v3
+      with:
+        repository: boxboat-github-practice/simple-tracker-spec
+
+    - name: list images
+      run: |
+        echo "pwd:"
+        ls -lah
+        echo "parent dir:"
+        ls -lah ..
+
+        docker run -p 8081:8081 --name api -d $IMAGE_NAME
         npm install newman
-        
-        docker pull ghcr.io/${GITHUB_REPOSITORY,,}:$TAG
-        docker images
-        docker run -p 8081:8081 --name api -d ghcr.io/${GITHUB_REPOSITORY,,}:$TAG
 
         ready=0
         while [[ $ready != 200 ]]; do
