@@ -30,7 +30,7 @@ jobs:
         docker images
         docker run -p 8081:8081 --name api -d ghcr.io/${GITHUB_REPOSITORY,,}:$TAG
 
-        until [ "`docker inspect -f {{.State.Running}} api`"=="true" ]; do
+        until [ '$(curl -s -o /dev/null -I -w "%{http_code}")'=="200" ]; do
           sleep 0.1;
         done;
 
