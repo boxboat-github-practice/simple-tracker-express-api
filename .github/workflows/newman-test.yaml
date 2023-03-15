@@ -8,39 +8,5 @@ env:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    steps:
+   uses: boxboat-github-practice/reusable-workflows/.github/workflows/simple-tracker-test.yaml@main
     
-    - name: Checkout Repo
-      uses: actions/checkout@v3
-
-    - name: Run Latest Image
-      run: |
-        ORG=${GITHUB_REPOSITORY%%/*}
-        REPO=${GITHUB_REPOSITORY##*/}
-        echo "org: $ORG"
-        echo "repo: $REPO"
-
-        export TAG=$(gh api \
-          -H "Accept: application/vnd.github+json" \
-          -H "X-GitHub-Api-Version: 2022-11-28" \
-          /orgs/$ORG/packages/container/$REPO/versions \
-          | jq -r '.[].metadata.container.tags | .[0]' \
-          | sort --version-sort \
-          | tail -n1)
-
-        IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}:$TAG"
-        docker pull $IMAGE
-        docker run -p 8081:8081 -d $IMAGE
-
-    - name: Checkout Spec Repo
-      uses: actions/checkout@v3
-      with:
-        repository: boxboat-github-practice/simple-tracker-spec
-
-    - name: Run Newman
-      run: |
-        npm install -g newman
-        newman run -e Local.postman_environment.json test-collection.json
-
-
