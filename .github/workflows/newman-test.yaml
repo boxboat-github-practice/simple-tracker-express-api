@@ -23,15 +23,16 @@ jobs:
           | jq -r '.[].metadata.container.tags | .[0]' \
           | sort --version-sort \
           | tail -n1)
-
         
-
         docker pull ghcr.io/${GITHUB_REPOSITORY,,}:$TAG
         docker images
         docker run -p 8081:8081 --name api -d ghcr.io/${GITHUB_REPOSITORY,,}:$TAG
 
-        until [ '$(curl -s -o /dev/null -I -w "%{http_code}")'=="200" ]; do
-          sleep 0.1;
-        done;
+        ready=0
+        while [[ $ready != 200 ]]; do
+          ready=$(curl -s -I 127.0.0.1:8081/employees | head -n 1 | awk -F ' ' '{print $2}')
+          sleep 0.1 
+        done
 
         curl 127.0.0.1:8081/employees | jq .
+
