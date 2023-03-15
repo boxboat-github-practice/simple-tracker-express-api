@@ -30,9 +30,8 @@ jobs:
           | tail -n1)
 
         IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}:$TAG"
-        echo "IMAGE_NAME=$IMAGE" >> $GITHUB_ENV
         docker pull $IMAGE
-        docker run -p 8081:8081 --name api -d $IMAGE_NAME
+        docker run -p 8081:8081 -d $IMAGE
 
     - name: Checkout Spec Repo
       uses: actions/checkout@v3
