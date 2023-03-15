@@ -40,19 +40,14 @@ jobs:
 
     - name: list images
       run: |
-        echo "pwd:"
-        ls -lah
-        echo "parent dir:"
-        ls -lah ..
-
         docker run -p 8081:8081 --name api -d $IMAGE_NAME
         npm install newman
 
-        READY=0
-        while [[ $READY != 200 ]]; do
-          READY=$(curl -s -I 127.0.0.1:8081/employees | head -n 1 | awk -F ' ' '{print $2}')
-          sleep 0.1 
-        done
+        # READY=0
+        # while [[ $READY != 200 ]]; do
+        #   READY=$(curl -s -I 127.0.0.1:8081/employees | head -n 1 | awk -F ' ' '{print $2}')
+        #   sleep 0.1 
+        # done
 
         curl 127.0.0.1:8081/employees | jq .
 
