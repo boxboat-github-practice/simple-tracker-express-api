@@ -31,7 +31,8 @@ app.post('/employees', function(req, res) {
     }
     res.send(employee)
   } else {
-    res.status(400).send('Missing employee name')
+    // res.status(400).send('Missing employee name')
+    res.send()
   }
 })
 
