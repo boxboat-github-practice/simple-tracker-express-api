@@ -31,10 +31,7 @@ app.post('/employees', function(req, res) {
     }
     res.send(employee)
   } else {
-    // res.status(400).send('Missing employee name')
-
-
-    res.send()
+    res.status(400).send('Missing employee name')
   }
 })
 
@@ -51,7 +48,7 @@ app.put('/employees/:id', function(req, res) {
     res.status(404)
     res.send("Employee not found")
   } else if (req.body.id !== undefined) {
-    res.status(400)
+    // res.status(400)
     res.send("Cannot update primary id")
   } else { 
     console.log(`User ${employee.id} updated:`)
