@@ -2,11 +2,13 @@ name: Test api
 
 on: 
   workflow_dispatch:
+  pull_request:
+    types: [opened, edited]
 
 env:
   GH_TOKEN: ${{ github.token }}
 
 jobs:
   test:
-   uses: boxboat-github-practice/reusable-workflows/.github/workflows/simple-tracker-test.yaml@d6ad89cb51d6f1a6982bb441f0523a403549c056
+   uses: boxboat-github-practice/reusable-workflows/.github/workflows/simple-tracker-test.yaml@main
     
