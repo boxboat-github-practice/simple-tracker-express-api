@@ -3,7 +3,6 @@ name: Smoke Test
 on: 
   workflow_dispatch:
   pull_request:
-    types: [opened, edited]
 
 env:
   GH_TOKEN: ${{ github.token }}
