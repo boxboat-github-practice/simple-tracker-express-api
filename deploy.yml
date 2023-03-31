@@ -6,7 +6,7 @@ metadata:
   name: simple-tracker-api
 spec:
   containers:
-  - image: ghcr.io/boxboat-github-practice/simple-tracker-express-api:20230331.11
+  - image: ghcr.io/boxboat-github-practice/simple-tracker-express-api:20230331.12
     name: simple-tracker-api
     resources: {}
     volumeMounts:
