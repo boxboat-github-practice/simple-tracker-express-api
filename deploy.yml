@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: simple-tracker-api
+  name: simple-tracker-api
+spec:
+  containers:
+  - image: ghcr.io/boxboat-github-practice/simple-tracker-express-api:20230331.10
+    name: simple-tracker-api
+    resources: {}
+    volumeMounts:
+    - name: config
+      mountPath: "/app/config.json"
+      subPath: config.json
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+  volumes: 
+  - name: config
+    secret:
+      secretName: config.json
+      items: 
+      - key: config.json
+        path: config.json
+status: {}
