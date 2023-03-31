@@ -109,33 +109,17 @@ module.exports = function(sequelize) {
   })
 
   const Tech = sequelize.define("tech", {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true
-    },
     type: {
       type: DataTypes.STRING
     }
+  }, {
+    sequelize,
+    tableName: "tech",
+    modelName: "tech"
   })
 
-  const ContractTechMap = sequelize.define("contracttechmap", {
-    techId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Tech,
-        key: 'id'
-      }
-    },
-    contractId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Contract,
-        key: 'id'
-      }
-    }
-  })
-
-  Contract.belongsToMany(Tech, { through: ContractTechMap })
+  Contract.hasMany(Tech, {onDelete: 'CASCADE', as: "tech"})
+  Tech.belongsTo(Contract)
   Client.hasMany(Contract, { onDelete: 'CASCADE' })
   Employee.hasMany(History, {onDelete: 'CASCADE'})
   Contract.hasMany(History, {onDelete: 'CASCADE'})

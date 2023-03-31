@@ -160,7 +160,7 @@ app.use(express.json())
   
   // contracts 
   const Contract = sequelize.models.contract
-  // const Tech = sequelize.models.tech
+  const Tech = sequelize.models.tech
 
   app.get('/contracts', function(req, res) {
     if(req.query.clientId) {
@@ -175,15 +175,19 @@ app.use(express.json())
   })
   
   app.get('/contracts/:id', function(req, res) {
-    Contract.findByPk(req.params.id).then(contract=>{
+    Contract.findByPk(req.params.id, 
+      {
+        include: {
+          model: Tech,
+          as: 'tech'
+        }
+      }
+    ).then(contract=>{
       if (contract === null) res.status(404), res.send("Contract not found")
       else {
-        // let body = contract.dataValues
-        // body.tech = []
-        // for(tech in contract.getTechs({ joinTableAttributes: [] })) {
-        //   body.tech.push(tech.type)
-        // }
-        res.send(contract.toJSON())
+        let body = contract.dataValues
+        body.tech = body.tech.map(t=>t.type)
+        res.send(body)
       }
     })
   })
@@ -191,27 +195,27 @@ app.use(express.json())
   app.post('/contracts', function(req, res) {
     Client.findByPk(req.body.clientId).then(client=>{
       if(client !== null) {
-        const contract = Contract.build({
+        let techlist = req.body.tech.map(t=> {return {type: t}})
+        Contract.create({
           clientId: client.id,
           type: req.body.type,
           startDate: req.body.startDate,
           endDate: req.body.endDate,
-        })
-        
-        contract.save().then(()=>{
-          // for(const tech in req.body.tech) {
-          //   Tech.findAll({where: {type: tech.toLowerCase()}}).then(t=>{
-          //     if (t !== null)
-          //     Contract.createTech({type: tech.toLowerCase()})
-          //   })
-          // }
-
+          tech: techlist
+        }, {
+          include: {
+            model: Tech,
+            as: 'tech'
+          }
+        }).then(contract=>{
           console.log(`Contract ${contract.id} created:`)
           for(key of Object.keys(req.body)) {
             if (key.toLowerCase() === "id") continue
             console.log(`  ${key}: ${contract[key]}`)
           }
-          res.send(contract.toJSON())
+          let response = contract.dataValues
+          response.tech = response.tech.map(t=>t.type)
+          res.send(response)
         })
       } else {
         res.status(400).send('Missing or invalid client id')
@@ -220,7 +224,14 @@ app.use(express.json())
   })
   
   app.put('/contracts/:id', function(req, res) {
-    Contract.findByPk(req.params.id).then(contract=>{
+    Contract.findByPk(req.params.id, 
+      {
+        include: {
+          model: Tech,
+          as: 'tech'
+        }
+      }
+    ).then(contract=>{
       if(contract === null) {
         res.status(404)
         res.send("Contract not found")
@@ -228,20 +239,32 @@ app.use(express.json())
         res.status(400)
         res.send("Cannot update primary id")
       } else {
-        // if (req.body.tech !== undefined) {
-        //   contract.removeTechs()
-        //   for(const tech in req.body.tech) {
-        //     contract.createTech({type: tech})
-        //   }
-        // }
+        let promises = []
+        if (req.body.tech !== undefined) {
+          for(const tech of contract.tech) {
+            promises.push(tech.destroy())
+          }
+          for(const tech of req.body.tech) {
+            promises.push(contract.createTech({type: tech}))
+          }
+          delete req.body.tech
+        }
 
         console.log(`Contract ${contract.id} updated:`)
         for(key of Object.keys(req.body)) {
           console.log(`  ${key}: ${contract[key]} => ${req.body[key]}`)
         }
-    
+        
         contract.set(req.body)
-        contract.save().then(()=>res.send(contract))
+        Promise.all(promises).then(()=>
+          contract.reload().then(()=>
+            contract.save().then(()=> {
+              let response = contract.dataValues
+              response.tech = response.tech.map(t=>t.type)
+              res.send(response)
+            })
+          )
+        )
       }   
     })
   })
