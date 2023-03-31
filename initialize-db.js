@@ -8,10 +8,14 @@ module.exports = async function initialize() {
 
     // connect to db
     let sequelize;
-    try {
-        sequelize = new Sequelize(dbName, userName, password, { host, dialect });
-        await sequelize.authenticate()
-    } catch (e) {
+    if (process.env.AZURE == 'true') {
+        try {
+            sequelize = new Sequelize(dbName, userName, password, { host, dialect });
+            await sequelize.authenticate()
+        } catch (e) {
+            sequelize = new Sequelize('sqlite::memory:')
+        }
+    } else {
         sequelize = new Sequelize('sqlite::memory:')
     }
 
