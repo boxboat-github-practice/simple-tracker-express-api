@@ -28,6 +28,15 @@ spec:
         env:
         - name: DB_SERVER
           value: "boxboat-demo-sql.database.windows.net"
+        - name: DB_NAME
+          value: "acctest-db-d"
+        - name: DB_USER
+          value: "blinky"
+        - name: DB_PASS
+          valueFrom: 
+            secretKeyRef:
+              name: dbpass
+              key: pass
         - name: AZURE
           value: "true"
       dnsPolicy: ClusterFirst
