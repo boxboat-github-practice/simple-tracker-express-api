@@ -20,11 +20,6 @@ spec:
       - image: ghcr.io/boxboat-github-practice/simple-tracker-express-api:20230331.15
         name: simple-tracker-api
         resources: {}
-        volumeMounts:
-        - name: config
-          mountPath: "/app/config.json"
-          subPath: config.json
-          readOnly: true
         env:
         - name: DB_SERVER
           value: "boxboat-demo-sql.database.windows.net"
@@ -41,13 +36,6 @@ spec:
           value: "true"
       dnsPolicy: ClusterFirst
       restartPolicy: Always
-      volumes: 
-      - name: config
-        secret:
-          secretName: config.json
-          items: 
-          - key: config.json
-            path: config.json
 ---
 apiVersion: v1
 kind: Service
