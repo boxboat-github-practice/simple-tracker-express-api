@@ -17,7 +17,7 @@ spec:
         app: simple-tracker-api
     spec:
       containers:
-      - image: ghcr.io/boxboat-github-practice/simple-tracker-express-api:20230331.15
+      - image: ghcr.io/boxboat-github-practice/simple-tracker-express-api:20230331.16
         name: simple-tracker-api
         resources: {}
         env:
