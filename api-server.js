@@ -13,6 +13,10 @@ app.use(express.json())
   const sequelize = await require('./initialize-db.js')()
   console.log(sequelize.models)
 
+  app.get('/', function (req, res) {
+    res.send("simple-tracker!")
+  })
+  
   // employees 
   const Employee = sequelize.models.employee 
   
