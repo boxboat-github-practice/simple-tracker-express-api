@@ -5,8 +5,9 @@ module.exports = async function initialize() {
     if (process.env.AZURE == 'true') {
         const dialect = 'mssql';
         const host = process.env.DB_SERVER;
-        const { dbName, dbConfig } = require('./config.json');
-        const { userName, password } = dbConfig.authentication.options;
+        const dbName = process.env.DB_NAME;
+        const userName = process.env.DB_USER;
+        const password = process.env.DB_PASS;
         try {
             sequelize = new Sequelize(dbName, userName, password, { host, dialect });
             await sequelize.authenticate()
