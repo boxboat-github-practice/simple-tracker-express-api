@@ -164,12 +164,33 @@ app.use(express.json())
 
   app.get('/contracts', function(req, res) {
     if(req.query.clientId) {
-      Contract.findAll({where:{clientId: req.query.clientId}}).then(contracts=>{
-        res.send(contracts.map(c=>c.dataValues))
+      Contract.findAll({
+        where: {
+          clientId: req.query.clientId
+        },
+        include: {
+          model: Tech,
+          as: 'tech'
+        }
+      }).then(contracts=>{
+        res.send(contracts.map(c=> {
+          let contract = c.dataValues
+          contract.tech = contract.tech.map(t=>t.type)
+          return contract
+        }))
       })
     } else {
-      Contract.findAll().then(contracts=>{
-        res.send(contracts.map(c=>c.dataValues))
+      Contract.findAll({
+        include: {
+          model: Tech,
+          as: 'tech'
+        }
+      }).then(contracts=>{
+        res.send(contracts.map(c=>{
+          let contract = c.dataValues
+          contract.tech = contract.tech.map(t=>t.type)
+          return contract
+        }))
       })
     }
   })
