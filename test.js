@@ -1,7 +1,11 @@
 const { Sequelize } = require('sequelize');
+const host = process.env.DB_SERVER;
+const dbName = process.env.DB_NAME;
+const userName = process.env.DB_USER;
+const password = process.env.DB_PASS;
 
-const sequelize = new Sequelize('acctest-db-d', 'blinky', 'x(e=e1p2([xLE8B6%-HY', {
-  host: 'boxboat-demo-sql.database.windows.net',
+const sequelize = new Sequelize(dbName, userName, password, {
+  host: host,
   dialect: 'mssql',
   driver: 'tedious',
   port: 1433
