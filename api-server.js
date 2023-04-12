@@ -175,7 +175,7 @@ app.use(express.json())
       }).then(contracts=>{
         res.send(contracts.map(c=> {
           let contract = c.dataValues
-          contract.tech = contract.tech.map(t=>t.type)
+          contract.tech = contract.tech?.map(t=>t.type)
           return contract
         }))
       })
@@ -188,7 +188,7 @@ app.use(express.json())
       }).then(contracts=>{
         res.send(contracts.map(c=>{
           let contract = c.dataValues
-          contract.tech = contract.tech.map(t=>t.type)
+          contract.tech = contract.tech?.map(t=>t.type)
           return contract
         }))
       })
@@ -207,7 +207,7 @@ app.use(express.json())
       if (contract === null) res.status(404), res.send("Contract not found")
       else {
         let body = contract.dataValues
-        body.tech = body.tech.map(t=>t.type)
+        body.tech = body.tech?.map(t=>t.type)
         res.send(body)
       }
     })
@@ -216,7 +216,7 @@ app.use(express.json())
   app.post('/contracts', function(req, res) {
     Client.findByPk(req.body.clientId).then(client=>{
       if(client !== null) {
-        let techlist = req.body.tech.map(t=> {return {type: t}})
+        let techlist = req.body.tech?.map(t=> {return {type: t}})
         Contract.create({
           clientId: client.id,
           type: req.body.type,
@@ -235,7 +235,7 @@ app.use(express.json())
             console.log(`  ${key}: ${contract[key]}`)
           }
           let response = contract.dataValues
-          response.tech = response.tech.map(t=>t.type)
+          response.tech = response.tech?.map(t=>t.type)
           res.send(response)
         })
       } else {
@@ -281,7 +281,7 @@ app.use(express.json())
           contract.reload().then(()=>
             contract.save().then(()=> {
               let response = contract.dataValues
-              response.tech = response.tech.map(t=>t.type)
+              response.tech = response.tech?.map(t=>t.type)
               res.send(response)
             })
           )
