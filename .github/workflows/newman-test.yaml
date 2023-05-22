@@ -11,6 +11,7 @@ jobs:
   newman:
    uses: derekbelrose/boxboat-reusable-workflows/.github/workflows/simple-tracker-test.yaml@main
   publish_newman:
+   needs: newman
    runs-on: ubuntu-latest
    strategy:
      matrix:
