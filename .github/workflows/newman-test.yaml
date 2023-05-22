@@ -10,6 +10,9 @@ env:
 jobs:
   newman:
    uses: derekbelrose/boxboat-reusable-workflows/.github/workflows/simple-tracker-test.yaml@main
+   with:
+     upload_artifact: true
+
   publish_newman:
    needs: newman
    runs-on: ubuntu-latest
