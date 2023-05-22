@@ -9,5 +9,5 @@ env:
 
 jobs:
   newman:
-   uses: boxboat-github-practice/reusable-workflows/.github/workflows/simple-tracker-test.yaml@main
+   uses: derekbelrose/boxboat-reusable-workflows/.github/workflows/simple-tracker-test.yaml@main
     
