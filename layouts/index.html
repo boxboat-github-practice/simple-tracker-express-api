@@ -5,12 +5,12 @@
 	</header>
 	<div>
 		
-		{{ range (.Pages.GroupByParam "runNumber").Reverse }}
+		{{ range .Site.RegularPages.GroupByParam "runNumber" }}
 		<div>
-			<div>{{ .Key }}</div>
+			<div>{{ .Key }} </div>
 			<div>
 			{{ range .Pages }}
-				<div><a href=".Params.folder"></a></div>
+			<div><a href="{{ .Permalink }}">{{ .Params.folder }}</a></div>
 			{{ end }}
 			</div>
 		</div>
