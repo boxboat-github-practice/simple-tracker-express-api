@@ -29,8 +29,6 @@ jobs:
     strategy:
       matrix:
         folder: ['employees', 'clients', 'contracts', 'history']
-    env:
-      HUGO_VERSION: 0.108.0
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v3
@@ -65,6 +63,8 @@ jobs:
   build_site:
     runs-on: ubuntu-latest
     needs: publish_newman
+    env:
+      HUGO_VERSION: 0.108.0
     steps:
       - name: Install Hugo CLI
         run: |
