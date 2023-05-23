@@ -61,3 +61,13 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./public
+  deploy_reports:
+    environment:
+      name: github_pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu
+    needs: publish_newman
+    steps:
+      - name: deploy to Github Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
