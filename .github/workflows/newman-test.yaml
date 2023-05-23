@@ -44,6 +44,3 @@ jobs:
         with:
           submodules: recursive
           ref: 'pages'
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v3
