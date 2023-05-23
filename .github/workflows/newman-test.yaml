@@ -12,6 +12,10 @@ permissions:
   contents: read
   pages: write
   id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
   
 jobs:
   newman:
@@ -24,11 +28,16 @@ jobs:
     strategy:
       matrix:
         folder: ['employees', 'clients', 'contracts', 'history']
+    env:
+      HUGO_VERSION: 0.108.0
     steps:
       - name: Download Artifacts
+        id: pages
         uses: actions/download-artifact@v3
         with:
           name: boxboat-simple-tracker-express-api-${{ github.run_number }}-${{matrix.folder }}-markdown
           path: ${{ matrix.folder }}
       - name: Show results
         run: ls -R
+      - name: Install Hugo
+        run: wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb && sudo dpkg -i ${{ runner.temp }}/hugo.deb
