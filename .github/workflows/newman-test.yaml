@@ -36,7 +36,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: boxboat-simple-tracker-express-api-${{ github.run_number }}-${{matrix.folder }}-markdown
-          path: ${{ matrix.folder }}
+          path: /tmp/${{ matrix.folder }}
       - name: Show results
         run: ls -R
       - name: Checkout
@@ -49,3 +49,11 @@ jobs:
         uses: actions/configure-pages@v3
       - name: Install Node.js dependencies
         run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
+      - name: Copy markdown files
+        run: cp /tmp/${{ matrix.folder }}/*.txt content/
+      - name: Build with Hugo
+        run: hugo --minify --baseUrl "${{ steps.pages.outputs.base_url }}/"
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v1
+	with:
+	  path: ./public
