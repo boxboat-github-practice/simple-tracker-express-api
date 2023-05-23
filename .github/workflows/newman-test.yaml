@@ -8,6 +8,11 @@ on:
 env:
   GH_TOKEN: ${{ github.token }}
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  
 jobs:
   newman:
     uses: derekbelrose/boxboat-reusable-workflows/.github/workflows/simple-tracker-test.yaml@main
@@ -27,3 +32,4 @@ jobs:
           path: ${{ matrix.folder }}
       - name: Show results
         run: ls -R
+      - name: 
