@@ -19,7 +19,7 @@ concurrency:
   
 jobs:
   newman:
-    uses: derekbelrose/boxboat-reusable-workflows/.github/workflows/simple-tracker-test.yaml@main
+    uses: derekbelrose/boxboat-reusable-workflows/.github/workflows/simple-tracker-test.yaml@implement-hugo-reporter
     with:
       upload_artifact: true
   publish_newman:
