@@ -77,7 +77,7 @@ jobs:
           git add .
           git commit -m "Hugo reports added: "
           git push origin pages
-	  
+
   deploy_reports:
     environment:
       name: github_pages
