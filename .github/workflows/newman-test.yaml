@@ -25,5 +25,11 @@ jobs:
        with:
          name: boxboat-simple-tracker-express-api-${{ github.run_number }}-${{ matrix.folder }}-markdown
          path: ${{ matrix.folder }}
-     - name: Show results
-       run: ls -R 
+     - name: Install hugo cli
+       run: |
+        wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
+          && sudo dpkg -i ${{ runner.temp }}/hugo.deb
+     - name: Checkout GitHug Pages
+       uses: actions/checkout@v3
+       with:
+         ref: 'pages'
