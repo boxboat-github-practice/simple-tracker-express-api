@@ -57,7 +57,7 @@ jobs:
           git config user.email "<>"
       - name: commit
         run: |
-	  git pull
+          git pull
           git add content/
           git commit -m "Automachinations! Hugo reports added" -a
           git push origin pages
