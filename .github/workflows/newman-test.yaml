@@ -45,7 +45,7 @@ jobs:
           ref: 'pages'
       - name: Copy markdown files
         run: |
-          ls -lah /tmp/${{matrix.folder}}/*.txt && for file in /tmp/${{ matrix.folder }}/*.txt; do mv -- "$file" "content/`basename ${file%.txt}`-${{matrix.folder}}.md"; done \
+          ls -lah /tmp/${{matrix.folder}}/*.txt && for file in /tmp/${{ matrix.folder }}/*.txt; do mv -- "$file" "content/posts/`basename ${file%.txt}`-${{matrix.folder}}.md"; done \
           && rm -rf /tmp/${{ matrix.folder }} && ls -ltrah content/ | tail -n1
       - name: set up git config
         run: |
