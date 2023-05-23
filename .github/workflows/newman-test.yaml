@@ -61,6 +61,14 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./public
+      - name: set up git config
+        run: |
+	  git config user.name "GitHub Actions"
+	  git config user.email "<>"
+      - name: commit
+        git add .
+	git commit -m "Hugo reports added"
+	git push origin pages
   deploy_reports:
     environment:
       name: github_pages
