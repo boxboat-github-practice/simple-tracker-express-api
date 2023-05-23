@@ -24,11 +24,11 @@ jobs:
       upload_artifact: true
   publish_newman:
     needs: newman
+    continue-on-error: true
     runs-on: ubuntu-latest
     strategy:
       matrix:
         folder: ['employees', 'clients', 'contracts', 'history']
-        fail-fast: false
     env:
       HUGO_VERSION: 0.108.0
     steps:
