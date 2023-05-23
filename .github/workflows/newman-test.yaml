@@ -29,7 +29,7 @@ jobs:
     strategy:
       matrix:
         folder: ['employees', 'clients', 'contracts', 'history']
-	max-parallel: 1
+	max-parallel: 1n
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v3
@@ -43,9 +43,6 @@ jobs:
         with:
           submodules: recursive
           ref: 'pages'
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v3
       - name: Copy markdown files
         run: |
           ls -lah /tmp/${{matrix.folder}}/*.txt && for file in /tmp/${{ matrix.folder }}/*.txt; do mv -- "$file" "content/`basename ${file%.txt}`.md"; done \
@@ -76,6 +73,9 @@ jobs:
         with:
           submodules: recursive
           ref: 'pages'
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v3
       - name: Install Node.js dependencies
         run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
       - name: Build with Hugo
