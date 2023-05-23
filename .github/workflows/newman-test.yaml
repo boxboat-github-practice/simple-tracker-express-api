@@ -51,12 +51,17 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
-      - name: Install Node.js dependencies
-        run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
       - name: Copy markdown files
         run: |
           ls -lah /tmp/${{matrix.folder}}/*.txt && for file in /tmp/${{ matrix.folder }}/*.txt; do mv -- "$file" "content/`basename ${file%.txt}`.md"; done \
           && rm -rf /tmp/${{ matrix.folder }} && ls -ltrah content/ | tail -n1
+
+  build_site:
+    runs-on: ubuntu-latest
+    needs: publish_newman
+    steps:
+      - name: Install Node.js dependencies
+        run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
       - name: Build with Hugo
         run: hugo --minify --baseUrl "${{ steps.pages.outputs.base_url }}/"
       - name: Upload Artifact
@@ -72,12 +77,13 @@ jobs:
           git add .
           git commit -m "Hugo reports added: "
           git push origin pages
+	  
   deploy_reports:
     environment:
       name: github_pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: publish_newman
+    needs: build_site
     steps:
       - name: deploy to Github Pages
         id: deployment
