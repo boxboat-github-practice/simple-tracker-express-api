@@ -30,6 +30,7 @@ jobs:
         folder: ['employees', 'clients', 'contracts', 'history']
     env:
       HUGO_VERSION: 0.108.0
+    fail-fast: false
     steps:
       - name: Download Artifacts
         id: pages
