@@ -56,8 +56,9 @@ jobs:
       - name: Copy markdown files
         run: |
           for file in /tmp/${{ matrix.folder }}/*.txt; do
-            mv -- "$file" "content/${file%.txt}.md"
-	  rm -rf /tmp/${{ matrix.folder }}
+            mv -- "$file" "content/${file%.txt}.md";
+	  done
+          rm -rf /tmp/${{ matrix.folder }}
       - name: Build with Hugo
         run: hugo --minify --baseUrl "${{ steps.pages.outputs.base_url }}/"
       - name: Upload Artifact
