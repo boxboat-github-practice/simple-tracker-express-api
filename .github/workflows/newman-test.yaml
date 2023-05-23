@@ -33,3 +33,17 @@ jobs:
        uses: actions/checkout@v3
        with:
          ref: 'pages'
+     - name: Setup Pages
+       id: pages
+       uses: actions/configure-pages@v3
+     - name: Install NodeJS dependencies
+       run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci | true"
+     - name: Build Hugo Site
+       env:
+         HUGO_ENVIRONMENT: production
+         HUGO_ENV: produciton
+       run: |
+         hugo \
+           --minify
+           --baseURL "${{ steps.pages.outputs.base_url }}/"
+	   
