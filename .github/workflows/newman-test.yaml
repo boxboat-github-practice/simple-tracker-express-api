@@ -42,8 +42,5 @@ jobs:
        env:
          HUGO_ENVIRONMENT: production
          HUGO_ENV: produciton
-       run: |
-         hugo \
-           --minify
-           --baseURL "${{ steps.pages.outputs.base_url }}/"
-	   
+       run: hugo --minify --baseUrl "${{ steps.pages.outputs.base_url }}/"
+
