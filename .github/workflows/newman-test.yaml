@@ -26,6 +26,6 @@ jobs:
        uses: actions/download-artifact@v3
        with:
          name: boxboat-simple-tracker-express-api-${{ github.run_number }}-${{matrix.folder }}-markdown
-	 path: ${{ matrix.folder }}
+         path: ${{ matrix.folder }}
      - name: Show results
        run: ls -R
