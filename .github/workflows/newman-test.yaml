@@ -23,6 +23,8 @@ jobs:
     with:
       upload_artifact: true
   publish_newman:
+    continue-on-error: false
+    fail-fast: false
     needs: newman
     runs-on: ubuntu-latest
     strategy:
@@ -30,7 +32,6 @@ jobs:
         folder: ['employees', 'clients', 'contracts', 'history']
     env:
       HUGO_VERSION: 0.108.0
-    fail-fast: false
     steps:
       - name: Download Artifacts
         id: pages
