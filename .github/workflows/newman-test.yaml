@@ -33,7 +33,6 @@ jobs:
       HUGO_VERSION: 0.108.0
     steps:
       - name: Download Artifacts
-        id: pages
         uses: actions/download-artifact@v3
         with:
           name: boxboat-simple-tracker-express-api-${{ github.run_number }}-${{matrix.folder }}-markdown
