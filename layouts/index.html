@@ -1,0 +1,13 @@
+{{ define "main" }}
+<main>
+	<header>
+		<h1>{{ .Title }}</h1>
+	</header>
+	<div>
+		
+		{{ range (.Site.RegularPages.ByParam "runId").Reverse }}
+		<div><a href="{{.Permalink}}">{{ .Params.folder }}</a></div>
+		{{ end }}
+	</div>
+</main>
+{{ end }}

@@ -1,4 +1,4 @@
 baseURL = 'https://boxboat-github-practice.github.io/simple-tracker-express-api/'
 languageCode = 'en-us'
 title = 'Newman Reports!'
-theme = 'ananke'
+theme = "ananke"
