@@ -1,3 +1,4 @@
+---
 name: Smoke Test
 
 on: 
@@ -18,7 +19,7 @@ jobs:
    runs-on: ubuntu-latest
    strategy:
      matrix:
-       folder: ['employees', 'clients', 'contracts', 'history' ]
+       folder: ['employees', 'clients', 'contracts', 'history']
    steps:
      - name: Download Artifacts
        uses: actions/download-artifact@v3
