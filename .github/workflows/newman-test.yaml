@@ -38,9 +38,3 @@ jobs:
        uses: actions/configure-pages@v3
      - name: Install NodeJS dependencies
        run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci | true"
-     - name: Build Hugo Site
-       env:
-         HUGO_ENVIRONMENT: production
-         HUGO_ENV: produciton
-       run: hugo --minify --baseUrl "${{ steps.pages.outputs.base_url }}/"
-
