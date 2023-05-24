@@ -5,7 +5,7 @@
 	</header>
 	<div>
 		
-		{{ range .Site.RegularPages.GroupByParam "runNumber" }}
+		{{ range (.Site.RegularPages.GroupByParam "runNumber").Reverse }}
 		<div>
 			<div>{{ .Key }} </div>
 			<div>
