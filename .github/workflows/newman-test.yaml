@@ -1,3 +1,4 @@
+---
 name: Smoke Test
 
 on: 
@@ -7,7 +8,90 @@ on:
 env:
   GH_TOKEN: ${{ github.token }}
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+  
 jobs:
   newman:
-   uses: boxboat-github-practice/reusable-workflows/.github/workflows/simple-tracker-test.yaml@main
-    
+    uses: boxboat-github-practice/reusable-workflows/.github/workflows/simple-tracker-test.yaml@main
+    with:
+      upload_artifact: true
+  publish_newman:
+    needs: newman
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        folder: ['employees', 'clients', 'contracts', 'history']
+      max-parallel: 1
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: boxboat-simple-tracker-express-api-${{ github.run_number }}-${{matrix.folder }}-markdown
+          path: /tmp/${{ matrix.folder }}
+      - name: Show results
+        run: ls -R
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          ref: 'pages'
+      - name: Copy markdown files
+        run: |
+          mv /tmp/${{ matrix.folder }}/*.md content/posts/ \
+          && rm -rf /tmp/${{ matrix.folder }} && ls -ltrah content/posts/ | tail -n1
+      - name: set up git config
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "<>"
+      - name: commit
+        run: |
+          git pull
+          git add content/
+          git commit -m "Automachinations! Hugo reports added" -a
+          git push origin pages
+
+  build_site:
+    runs-on: ubuntu-latest
+    needs: publish_newman
+    env:
+      HUGO_VERSION: 0.108.0
+    steps:
+      - name: Install Hugo CLI
+        run: |
+          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
+          && sudo dpkg -i ${{ runner.temp }}/hugo.deb
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          ref: 'pages'
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v3
+      - name: Install Node.js dependencies
+        run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
+      - name: Build with Hugo
+        run: hugo --minify --baseUrl "${{ steps.pages.outputs.base_url }}/"
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./public
+
+  deploy_reports:
+    environment:
+      name: github_pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build_site
+    steps:
+      - name: deploy to Github Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
