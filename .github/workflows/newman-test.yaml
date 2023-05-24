@@ -31,6 +31,8 @@ jobs:
         folder: ['employees', 'clients', 'contracts', 'history']
       max-parallel: 1
     steps:
+      - name: debug
+        echo: ${{ github.ref }}
       - name: Download Artifacts
         uses: actions/download-artifact@v3
         with:
