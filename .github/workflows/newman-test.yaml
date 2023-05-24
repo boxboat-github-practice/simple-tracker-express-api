@@ -19,7 +19,7 @@ concurrency:
   
 jobs:
   newman:
-    uses: boxboat-github-practice/boxboat-reusable-workflows/.github/workflows/simple-tracker-test.yaml@main
+    uses: boxboat-github-practice/reusable-workflows/.github/workflows/simple-tracker-test.yaml@main
     with:
       upload_artifact: true
   publish_newman:
