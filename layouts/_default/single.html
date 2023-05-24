@@ -1,0 +1,16 @@
+{{ define "header" }}
+   {{/* We can override any block in the baseof file be defining it in the template */}}
+  {{ partial "page-header.html" . }}
+{{ end }}
+
+{{ define "main" }}
+
+<section id="main">
+  <h1 id="title">{{ .Title }}</h1>
+  <div>
+    <article id="content">
+      {{ .Content }}
+    </article>
+  </div>
+</section>
+{{ end }}
