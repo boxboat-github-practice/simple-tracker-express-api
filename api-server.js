@@ -277,15 +277,15 @@ app.use(express.json())
         }
         
         contract.set(req.body)
-        Promise.all(promises).then(()=>
-          contract.reload().then(()=>
-            contract.save().then(()=> {
-              let response = contract.dataValues
-              response.tech = response.tech?.map(t=>t.type)
-              res.send(response)
+        contract.save().then(()=>{
+          Promise.all(promises).then(()=>
+            contract.reload().then(()=>{
+                let response = contract.dataValues
+                response.tech = response.tech?.map(t=>t.type)
+                res.send(response)
             })
           )
-        )
+        })
       }   
     })
   })
